@@ -30,13 +30,16 @@ def _transcribe_groq(file_path: str) -> str | None:
     try:
         from groq import Groq
         client = Groq(api_key=GROQ_API_KEY)
+        filename = os.path.basename(file_path)
         with open(file_path, "rb") as f:
             result = client.audio.transcriptions.create(
                 model="whisper-large-v3-turbo",
-                file=f,
+                file=(filename, f, "audio/ogg"),
                 language="uz",
+                response_format="text",
             )
-        return (result.text or "").strip() or None
+        text = result if isinstance(result, str) else getattr(result, "text", "") or ""
+        return text.strip() or None
     except Exception as e:
         print(f"[voice] Groq xatosi: {e}")
         return None
