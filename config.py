@@ -17,8 +17,12 @@ _BASE = os.path.dirname(os.path.abspath(__file__))
 VOSK_MODEL_PATH = os.path.join(_BASE, "model_uz")
 USE_VOSK = os.path.isdir(VOSK_MODEL_PATH)
 
+# Groq (bepul ovoz)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
+USE_GROQ = bool(GROQ_API_KEY)
+
 # Ovozli xabar umuman yoqilganmi?
-VOICE_ENABLED = USE_OPENAI or USE_VOSK
+VOICE_ENABLED = USE_OPENAI or USE_VOSK or USE_GROQ
 
 # Baza fayli
 DB_PATH = os.path.join(_BASE, "harajatlar.db")
